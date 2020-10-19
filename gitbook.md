@@ -1,6 +1,8 @@
 # 关于 Git 的学习
 
-Git 是一个分布式的版本控制软件，操作方式主要有 **命令行模式（GitBash）** 和**GUI 模式（TprtposeGit）**。一下主要使用 Git Bash来操作。
+Git 是一个分布式的版本控制软件，操作方式主要有 **命令行模式（GitBash）** 和**GUI 模式（TprtposeGit）**。以下主要使用 Git Bash来操作。
+
+使用文档：https://git-scm.com/book/zh/v2
 
 版本控制就是记录一个或多个文件的改动。可以记录很多历史数据以供回看时对比和查验，或出现问题时快速回退。
 
@@ -40,3 +42,139 @@ Git 有三种状态：
 
 1. https://git-scm.com/ Git 官网下载安装
 2. Github 安装自带 命令行Git ，http://windows.github.com 或 http://mac.github.com
+3. 其他如 TprtposeGit 等
+
+## 使用
+
+```sh
+# 配置 git,单独项目配置去掉 --global
+git config --global user.name "xxxx"
+git config --global user.email "xxx@xxx.xxx"
+# 查看配置
+git config --list
+git config user.name
+# 查看帮助
+git help <命令>
+git <命令> --help
+# 初始化一个仓库
+git init
+# 添加新增文件和修改到缓冲区
+git add 文件名或者文件匹配符
+# 添加所有
+git add . 
+git add *
+git add *.js
+# 提交到仓库
+git commit -m "xxxxxx"
+# 克隆远端，会创建一个文件夹并初始化一个 .git 文件夹 并拉取所有数据，去除最新的文件
+# git 支持 https、git://、ssh 等协议
+git clone 仓库地址 自定义文件夹名默认远端仓库名
+# 文件有两种状态，一种已跟踪一种是未跟踪。未跟踪的文件是新建的为存储过的文件
+# 检查文件状态
+git status
+# 处于 master 分支，没有提交到版本库，已经暂存处于暂存区
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   gitbook.md
+# 状态简览
+git status -s 
+git status --short 
+#详细的修改 当前文件和暂存区快照之间的差异
+git diff
+# 查看已暂存的将要添加到下次提交里的内容
+git diff --cached
+# version > 1.6.1
+git diff --staged
+# 查看可以使用的 Git Diff 插件
+git difftool --tool-help
+# 使用插件输出结果
+git difftool
+# 提交，打开提交信息编辑器，编辑器中填充有 git status 的信息
+git commit
+# 增加文件修改的信息，在打开的编辑器中
+git commit -v
+# 提交信息放在同一行
+git commit -m "xxxxxx"
+# 跳过暂存区，将所有已经跟踪过的文件暂存并提交
+git commit -a
+# 移除文件,手动删除文件后使用 git rm xxx 删除删除的记录
+# 如果删除钱修改过并且已经放到暂存区，需要加 -f 的参数 force 迫使，强行的意思
+git rm
+# 从存储库和暂存区删除但是保留工作目录的当前文件
+git rm --cached xxx
+# git rm 可以使用 glob 模式
+# 删除 log/ 目录下的扩展名为 .log 的所有文件
+git rm log/\*.log
+# 删除所有以 ~ 结尾的文件
+git rm \*~
+# 移动文件
+# 改名
+git mv file_from file_to
+# 相当于
+mv file_from file_to
+git rm file_from
+git add file_to
+# 查看提交历史
+git log
+# 显示提交差异
+git log -p
+# 显示最近两条
+git log -2
+# 显示修改的简略信息
+git log --stat
+# 显示不同的格式展示提交信息 oneline short full fuller 等模式可用
+git log --pretty=oneline
+#其他定制类型
+# 具体请查看 https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2#log_options
+# https://git-scm.com/docs/git-log
+git log --pretty=format:"%h - %an, %ar : %s"
+git log --pretty=format:"%h %s" --graph
+# 限制输出长度，最近两周内的提交,可以使用 "2020-10-19"、"2 years 1 day 3 minutes ago"
+git log --since=2.weeks
+# 撤销操作，谨慎使用会造成工作丢失
+#将暂存区的文件提交并覆盖前一次的提交结果 git commit --amend
+git commit -m "initial commit"
+git add frorgotten_file 
+git commit --amend 
+#取消暂存文件
+git reset
+```
+
+### 忽略文件
+
+如果不需要将一些文件纳入管理范围，就可以使用 .gitignore 文件来设置忽略规则。
+
+规则：
+
+- 所有的空行和 # 开头的行都会被忽略
+- 可以使用标准的glob模式匹配
+- 匹配模式可以使用以 / 开头防止递归
+- 匹配模式可以使用 / 结尾来指定目录
+- 要忽略指定模式以外的文件或目录，可以在模式钱加上 ! 来取反
+
+```sh
+# glob模式指的是shell所使用的简化的正则表达式。
+# * 匹配零个或多个任意字符 
+# [abc]匹配任何一个方括号中的字符；
+# ? 只匹配一个任意字符
+# ** 表示匹配人以中间目录
+# 忽略 test.js 文件
+test.js
+# 忽略以.doc 结尾的文件
+*.doc
+# 跟踪 lib.doc 文件，即使上边忽略所有 .doc 文件
+!lib.doc
+# 仅忽略当前文件夹下的 dist 文件夹，不忽略子文件夹下的dist文件夹
+/dist
+# 忽略 dist 文件夹下的所有文件
+dist/
+# 忽略doc文件夹下的所有的 .pdf 文件
+doc/**/*.pdf
+```
+
+> Github上有一个库 https://github.com/github/gitignore 可以查看对饮规则的运用
+
+
+
