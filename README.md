@@ -44,7 +44,7 @@ Git 有三种状态：
 2. Github 安装自带 命令行Git ，http://windows.github.com 或 http://mac.github.com
 3. 其他如 TprtposeGit 等
 
-## 使用
+## 简单使用
 
 ```sh
 # 配置 git,单独项目配置去掉 --global
@@ -133,7 +133,7 @@ git log --pretty=format:"%h - %an, %ar : %s"
 git log --pretty=format:"%h %s" --graph
 # 限制输出长度，最近两周内的提交,可以使用 "2020-10-19"、"2 years 1 day 3 minutes ago"
 git log --since=2.weeks
-#将暂存区的文件提交并覆盖前一次的提交结果 git commit --amend
+#将暂存区的文件提交并覆盖前一次的提交结果 git commit --amend ,撤销后提交合并到远端需要强制提交 git push origin +main
 git commit -m "initial commit"
 git add frorgotten_file 
 git commit --amend 
@@ -143,7 +143,7 @@ git reset
 git checkout -- xxxx
 ```
 
-### 忽略文件
+## 忽略文件
 
 如果不需要将一些文件纳入管理范围，就可以使用 .gitignore 文件来设置忽略规则。
 
@@ -182,13 +182,76 @@ doc/**/*.pdf
 ```sh
 # 如果已经配置了远程仓库，可以看到远程服务器的简写
 git remote
+git remote -v
 # 从远端新建复制分支到本地
 git branch --track main origin/main
 # 强制推送
 git push origin +main
+# 添加源，使用简称来代替每次要输入的地址，减少使用难度
+git remote add 分支名 源地址
+git remote add pb https://github.com/paulboone/ticgit
+# 拉取远端信息，拉完后可以在本地通过 pb/master 来访问当，可以合并到自己的某个分支中，想要查看可以从此分支创建一个本地分支
+git fetch pb
+# 从远端拉取并合并
+git pull origin master
+#查看远程仓库
+git remote show origin
+# 修改远端仓库的简写名 origin 是默认名
+git remote rename pb paul
+git remote
+# 移除远程仓库 
+git remote rm 
 ```
 
+## 标签
 
+标签主要有两种：轻量标签（lightweight）与附注标签（annotated）
 
+- 轻量标签主要是临时标签，只是对特定提交的引用
+- 附注标签有一系列关于标签的信息
 
+```sh
+# 查看标签
+git tag
+# 标签太多时，查看指定标签
+git tag -l "v1.8.5*"
+# 创建辅助标签
+git tag -a v1.4 -m "my verison 1.4"
+# 查看具体的标签信息
+git show v1.4
+# 创建轻量标签
+git tag v1.5-lw
+# 给以前的提交打标签,查看日志，使用校验和来打标签可以使用部分校验和
+git log --pretty=oneline
+git tag -a v1.2 9fceb02
+# 推送标签到远端
+git push origin v1.5
+# 推送多个标签
+git push origin --tags\
+# 检出标签,创建一个分支 version2 基于 v2.0.0,此时 version2 就和 v2.0.0 标签内容一样
+git checkout -b version2 v2.0.0
+# 如果检出后的分支修改并提交的话需要小心合并
+```
+
+## Git 的别名
+
+```sh
+# 使用 git co 就是使用 git checkout 下同
+$ git config --global alias.co checkout
+$ git config --global alias.br branch
+$ git config --global alias.ci commit
+$ git config --global alias.st status
+# git reset HEAD -- fileA
+$ git config --global alias.unstage 'reset HEAD --'
+git unstage fileA
+# 查看上一次提交的别名
+$ git config --global alias.last 'log -1 HEAD'
+git last
+# 当需要执行外部命令时，需要在命令前加上!
+$ git config --global alias.visual '!gitk'
+```
+
+## Git 的分支
+
+Git 的优势在与它的分支的创建和切换都很轻量，很快。
 
