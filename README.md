@@ -184,6 +184,8 @@ doc/**/*.pdf
 git remote
 # 从远端新建复制分支到本地
 git branch --track main origin/main
+# 强制推送
+git push origin +main
 ```
 
 
