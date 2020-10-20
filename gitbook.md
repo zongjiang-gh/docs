@@ -133,13 +133,14 @@ git log --pretty=format:"%h - %an, %ar : %s"
 git log --pretty=format:"%h %s" --graph
 # 限制输出长度，最近两周内的提交,可以使用 "2020-10-19"、"2 years 1 day 3 minutes ago"
 git log --since=2.weeks
-# 撤销操作，谨慎使用会造成工作丢失
 #将暂存区的文件提交并覆盖前一次的提交结果 git commit --amend
 git commit -m "initial commit"
 git add frorgotten_file 
 git commit --amend 
 #取消暂存文件
 git reset
+# 撤销操作，谨慎使用,会造成工作丢失
+git checkout -- xxxx
 ```
 
 ### 忽略文件
@@ -175,6 +176,15 @@ doc/**/*.pdf
 ```
 
 > Github上有一个库 https://github.com/github/gitignore 可以查看对饮规则的运用
+
+## 远程仓库
+
+```sh
+# 如果已经配置了远程仓库，可以看到远程服务器的简写
+git remote
+```
+
+
 
 
 
