@@ -193,6 +193,8 @@ git ls-remote
 git branch --track main origin/main
 # 强制推送
 git push origin +main
+# 覆盖服务器上的提交历史
+git push --force
 # 添加源，使用简称来代替每次要输入的地址，减少使用难度
 git remote add 分支名 源地址
 git remote add pb https://github.com/paulboone/ticgit
@@ -207,15 +209,7 @@ git remote rename pb paul
 git remote
 # 移除远程仓库 
 git remote rm 
-# 跟踪分支,--track 是一个快捷方式，两个命令相同
-git checkout --track origin/dev
-git checkout -b dev origin/dev
-# 设置跟踪或者修改正在耿总的上游分支
-git branch -u origin/dev
-git branch --set-upstream-to origin/dev
-# 上游的快捷方式 @{upstream} 或者 @{u},以下两个命令等价
-git merge origin/master
-git merge @{u}
+
 ```
 
 ## 标签
@@ -276,7 +270,8 @@ Git 的优势在与它的分支的创建和切换都很轻量，很快。Git 的
 git branch
 # 查看所有分支的最后一次提交
 git branch -v
-# 查看所有的跟踪分支
+# 查看所有的跟踪分支的跟踪信息,先拉取一次所有的远端的信息
+git fetch --all
 git branch -vv
 # 查看已经合并或尚未合并到当前分支的分支
 git branch --merged
@@ -295,8 +290,49 @@ git merge dev
 git mergetool
 # 删除分支
 git branch -d dev
-
+# 跟踪分支,--track 是一个快捷方式，两个命令相同
+git checkout --track origin/dev
+git checkout -b dev origin/dev
+# 设置跟踪或者修改正在耿总的上游分支
+git branch -u origin/dev
+git branch --set-upstream-to origin/dev
+# 上游的快捷方式 @{upstream} 或者 @{u},以下两个命令等价
+git merge origin/master
+git merge @{u}
+# 删除远程分支，只是删除指针，Git服务器会保留数据一段时间知道垃圾回收运行，可以进行恢复
+git push origin --delete dev
+# 变基，主要就是可以减少提交历史的分叉，看起来整洁一些
+# 变基是将一系列提交引用到另一个分支上，合并是把最终结果合并到一起
+git checkout dev
+git rebase master
+# 此时 dev 分支比较新 master 分支比较老 
+git checkout master
+git merge dev
+# 合并完成后 master 和 dev 引用统一个指针
+git branch -d dev
+# 当从一个工作 server 分支新建一个分支 client 并想要将 client 分支和 server 分支不同的提交变基到 master 上并合并
+git rebase --onto master server client
+git checkout master
+git merge client
+# 不切换到 server 分支直接进行变基
+git rebase master server
+git checkout master
+git merge server
+git branch -d client
+git branch -d server
 ```
 
+> **注意**
+>
+> 不要对在你的仓库外有副本的分支执行变基，就是只对你本地的提交进行变基不要对远端提交变基后覆盖，这要会导致多人进行的任务爆炸性混乱。如果必须要要做，所有人都要执行 ：
+>
+> git pull --rebase
 
+## 服务器上的 Git
+
+> 关于在多种操作系统中生成 SSH 密钥的更深入教程，请参阅 GitHub 的 SSH 密钥指南https://help.github.com/articles/generating-ssh-keys。
+
+具体操作根据个人需要，一般公司内部都是 gitlab
+
+## 
 
