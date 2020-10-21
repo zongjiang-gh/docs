@@ -1,4 +1,4 @@
-# 关于 Git 的学习
+# 关于 Git 的学习 (基于 2.29.0.windows.1)
 
 Git 是一个分布式的版本控制软件，操作方式主要有 **命令行模式（GitBash）** 和**GUI 模式（TprtposeGit）**。以下主要使用 Git Bash来操作。
 
@@ -257,5 +257,19 @@ $ git config --global alias.visual '!gitk'
 
 ## Git 的分支
 
-Git 的优势在与它的分支的创建和切换都很轻量，很快。
+Git 的优势在与它的分支的创建和切换都很轻量，很快。Git 的分支，其实本质上仅仅是指向提交对象的可变指针。
+
+```sh
+# git init 时会创建一个 master 分支
+# 创建分支, HEAD 指的是当前所在的分支
+git branch dev
+# 查看各个分支当前所指的对象
+git log --oneline --decorate
+# 切换分支
+git checkout dev
+# 在不同的分支开发并提交后，查看分叉历史
+git log --oneline --decorate --graph --all
+```
+
+
 
