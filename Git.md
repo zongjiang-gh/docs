@@ -187,6 +187,8 @@ doc/**/*.pdf
 # 如果已经配置了远程仓库，可以看到远程服务器的简写
 git remote
 git remote -v
+# 查看远程引用的完整列表
+git ls-remote
 # 从远端新建复制分支到本地
 git branch --track main origin/main
 # 强制推送
@@ -205,6 +207,15 @@ git remote rename pb paul
 git remote
 # 移除远程仓库 
 git remote rm 
+# 跟踪分支,--track 是一个快捷方式，两个命令相同
+git checkout --track origin/dev
+git checkout -b dev origin/dev
+# 设置跟踪或者修改正在耿总的上游分支
+git branch -u origin/dev
+git branch --set-upstream-to origin/dev
+# 上游的快捷方式 @{upstream} 或者 @{u},以下两个命令等价
+git merge origin/master
+git merge @{u}
 ```
 
 ## 标签
@@ -261,14 +272,30 @@ Git 的优势在与它的分支的创建和切换都很轻量，很快。Git 的
 
 ```sh
 # git init 时会创建一个 master 分支
+# 查看所有的分支
+git branch
+# 查看所有分支的最后一次提交
+git branch -v
+# 查看所有的跟踪分支
+git branch -vv
+# 查看已经合并或尚未合并到当前分支的分支
+git branch --merged
+git branch --no-merged
 # 创建分支, HEAD 指的是当前所在的分支
 git branch dev
 # 查看各个分支当前所指的对象
 git log --oneline --decorate
 # 切换分支
 git checkout dev
-# 在不同的分支开发并提交后，查看分叉历史
+# 在不同的分支开发并提交后，查看分叉历史,可以创建简写加快效率
 git log --oneline --decorate --graph --all
+# 合并分支
+git merge dev
+# 合并时使用图形工具
+git mergetool
+# 删除分支
+git branch -d dev
+
 ```
 
 
