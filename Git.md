@@ -4,6 +4,8 @@ Git 是一个分布式的版本控制软件，操作方式主要有 **命令行�
 
 使用文档：https://git-scm.com/book/zh/v2
 
+更新 Git（windows） `git update-git-for-windows` ，2.17.1以下版本 `git update`
+
 版本控制就是记录一个或多个文件的改动。可以记录很多历史数据以供回看时对比和查验，或出现问题时快速回退。
 
 版本控制主要有三种：
@@ -50,6 +52,8 @@ Git 有三种状态：
 # 配置 git,单独项目配置去掉 --global
 git config --global user.name "xxxx"
 git config --global user.email "xxx@xxx.xxx"
+# 设置 git init 时创建默认分支的名称
+git config --global init.defaultBranch main
 # 查看配置
 git config --list
 git config user.name
@@ -254,6 +258,4 @@ $ git config --global alias.visual '!gitk'
 ## Git 的分支
 
 Git 的优势在与它的分支的创建和切换都很轻量，很快。
-
-
 
