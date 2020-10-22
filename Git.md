@@ -85,8 +85,10 @@ Changes to be committed:
 # 状态简览
 git status -s 
 git status --short 
-#详细的修改 当前文件和暂存区快照之间的差异
+# 详细的修改 当前文件和暂存区快照之间的差异
 git diff
+# 查看空行
+git diff --check
 # 查看已暂存的将要添加到下次提交里的内容
 git diff --cached
 # version > 1.6.1
@@ -334,5 +336,5 @@ git branch -d server
 
 具体操作根据个人需要，一般公司内部都是 gitlab
 
-## 
+
 
