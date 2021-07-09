@@ -2041,3 +2041,1300 @@ border- [left | right | top | bottom]属性用于在元素的特定边添加边�
 
 ## 第 12 章 overflow
 
+|   值    |                           说明                           |
+| :-----: | :------------------------------------------------------: |
+| visible |       默认值。内容不会被修剪，会呈现在元素框之外。       |
+| hidden  |          内容会被修剪，并且其余内容是不可见的。          |
+| scroll  | 内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容。 |
+|  auto   | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。 |
+| inherit |         规定应该从父元素继承 overflow 属性的值。         |
+
+### 12.1 overflow-wrap
+
+[overflow-wrap](https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-wrap) 通知浏览器可以将一行文本折成多行。帮助避免长文本溢出容器导致布局出现问题。常用属性还有[ word-break](https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break) 和[hyphens](https://developer.mozilla.org/zh-CN/docs/Web/CSS/hyphens)
+
+|     值     |                                             说明                                             |
+| :--------: | :------------------------------------------------------------------------------------------: |
+|   normal   |              默认值。行只能在正常的单词断点处中断。（例如两个单词之间的空格）。              |
+| break-word | 内表示如果行内没有多余的地方容纳该单词到结尾，则那些正常的不能被分割的单词会被强制分割换行。 |
+|  inherit   |                   内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容。                   |
+
+```html
+<style>
+  div {
+    width: 100px;
+    outline: 1px dashed #bbb;
+  }
+
+  #div1 {
+    overflow-wrap: normal;
+  }
+
+  #div2 {
+    overflow-wrap: break-word;
+  }
+</style>
+
+<div id="div1">
+  <strong>#div1</strong>: Small words are displayed normally, but a long word like <span style="red;">supercalifragilisticexpialidocious</span> is too long so it will overflow past the
+  edge of the line-break
+</div>
+<div id="div2">
+  <strong>#div2</strong>: Small words are displayed normally, but a long word like <span style="red;">supercalifragilisticexpialidocious</span> will be split at the line break and continue
+  on the next line.
+</div>
+```
+
+### 12.2 overflow-x 和 overflow-y
+
+这两个属性的工作方式与溢出属性类似，并且接受相同的值。 overflow-x 仅在x轴有效。 overflow-y 在y轴工作。
+
+```html
+<style>
+  div {
+    width: 200px;
+    height: 200px;
+  }
+
+  #div-x {
+    overflow-x: hidden;
+  }
+
+  #div-y {
+    overflow-y: hidden;
+  }
+</style>
+<div id="div-x">
+  If this div is too small to display its contents,
+  the content to the left and right will be clipped.
+</div>
+<div id="div-y">
+  If this div is too small to display its contents,
+  the content to the top and bottom will be clipped.
+</div>
+```
+
+### 12.3 overflow:auto;
+
+大部分 PC 浏览器都会显示水平和垂直滚动条，无论是否有超出内容，避免了滚动条的显示消失导致的闪烁。打印机可以打印超出内容。
+
+```html
+<div style="width: 100px;height: 100px; overflow: auto;">This div is too small to display its contents to display the effects of the overflow property.</div>
+```
+
+### 12.4 overflow:visible;
+
+显示超出部分
+
+```html
+<div style="width:50px;height:50px;overflow:visible;">
+ Even if this div is too small to display its contents, the content is not clipped.
+</div>
+```
+
+### 12.5 使用 overflow:hidden; 创建块级格式化上下文
+
+使用后文字不再环绕图片
+
+```html
+<style>
+  img {
+    float: left;
+    margin-right: 10px;
+  }
+
+  div {
+    /* creates block formatting context */
+    overflow: hidden;
+  }
+</style>
+<img src="http://placehold.it/100x100">
+<div>
+  <p>Lorem ipsum dolor sit amet, cum no paulo mollis pertinacia.</p>
+  <p>Ad case omnis nam, mutat deseruisse persequeris eos ad, in tollit debitis sea.</p>
+</div>
+```
+
+## 第 13 章 媒体查询
+
+|     参数      |                          释义                           |
+| :-----------: | :-----------------------------------------------------: |
+|   mediatype   | （可选）这是媒体的类型。 可能是所有屏幕范围内的任何东西 |
+|      not      |           （可选）不将CSS应用于此特定媒体类型           |
+| media feature |                        媒体特征                         |
+
+**媒体特征**
+
+| media feature |                                          释义                                           |
+| :-----------: | :-------------------------------------------------------------------------------------: |
+| aspect-ratio  |                      定义输出设备中的页面可见区域宽度与高度的比率                       |
+|     color     |              定义输出设备每一组彩色原件的个数。如果不是彩色设备，则值等于0              |
+|  color-index  |         定义在输出设备的彩色查询表中的条目数。如果没有使用彩色查询表，则值等于0         |
+|     grid      |                          用来查询输出设备是否使用栅格或点阵。                           |
+|    height     |                           定义输出设备中的页面可见区域高度。                            |
+|   max-width   |                         定义输出设备中的页面最大可见区域宽度。                          |
+|   min-width   |                         定义输出设备中的页面最小可见区域宽度。                          |
+|  max-height   |                         定义输出设备中的页面最大可见区域高度。                          |
+|  min-height   |                         定义输出设备中的页面最小可见区域高度。                          |
+|  monochrome   |     定义在一个单色框架缓冲区中每像素包含的单色原件个数。如果不是单色设备，则值等于0     |
+|  orientation  | 仅当设备使用指定方向时才会显示CSS，定义输出设备中的页面可见区域高度是否大于或等于宽度。 |
+|  resolution   |                      定义设备的分辨率。如：96dpi, 300dpi, 118dpcm                       |
+|     scan      |                               定义电视类设备的扫描工序。                                |
+|     width     |                           定义输出设备中的页面可见区域宽度。                            |
+
+**不推荐使用的特征：**
+
+|    media feature    |                                      释义                                      |
+| :-----------------: | :----------------------------------------------------------------------------: |
+| device-aspect-ratio |          不推荐使用的CSS仅在高度/宽度比率与指定比率匹配的设备上显示。          |
+|  max-device-width   |      已弃用与max-width相同，但测量物理屏幕宽度，而不是显示浏览器的宽度。       |
+|  min-device-width   |      已弃用与min-width相同，但测量物理屏幕宽度，而不是显示浏览器的宽度。       |
+|  max-device-height  |    已弃用与max-height相同，但测量的是物理屏幕高度，而不是显示浏览器的高度。    |
+|  min-device-height  | 不建议使用。与min-height相同，但测量的是物理屏幕高度，而不是显示浏览器的高度。 |
+
+### 13.1 关键字和语法
+
+媒体查询允许人们根据称为媒体类型的设备/媒体（例如屏幕，打印或手持设备）的类型来应用CSS规则，并通过媒体特征（例如颜色或视口尺寸的可用性）描述设备的其他方面。
+
+```css
+/* 常用的语法 */
+@media [...]{
+   /* 单个或者多个 CSS 语法规则被应用，当查询条件满足时。 */ 
+}
+/* 查询媒体类型 */
+@media print{}
+/* 查询媒体类型和媒体特征 */
+@media screen and (max-width: 600px){}
+/* 查询媒体特征和隐含的媒体类型为 all 的查询 */
+@media (orientation: protrait){}
+```
+
+[菜鸟教程](https://www.runoob.com/cssref/css3-pr-mediaquery.html)、[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media)
+
+### 13.2 基础示例
+
+```css
+@media screen and (min-width:720;){
+  body{
+    background-color: skyblue;
+  }
+}
+```
+
+### 13.2 媒体类型
+
+```css
+@media print {
+  html{
+    background-color: white;
+  }
+}
+@media not print {
+  html{
+    background-color: green;
+  }
+}
+@media only screen {
+  .fadeInEffects{
+    display: block;
+  }
+}
+```
+|     值     |                                 释义                                  |
+| :--------: | :-------------------------------------------------------------------: |
+|    all     |                           应用到所有的设备                            |
+|   screen   |                 用于电脑屏幕，平板电脑，智能手机等。                  |
+|   print    |                         用于打印机和打印预览                          |
+|  handheld  |          已废弃。 用于掌上设备或更小的装置，如PDA和小型电话           |
+| projection |                         已废弃。 用于投影设备                         |
+|   aural    |                     已废弃。用于语音和声音合成器                      |
+|  braille   |                   已废弃。 应用于盲文触摸式反馈设备                   |
+|  embossed  |                    已废弃。 用于打印的盲人印刷设备                    |
+|     tv     |                      已废弃。 用于电视和网络电视                      |
+|    tty     | 已废弃。 用于固定的字符网格，如电报、终端设备和对字符有限制的便携设备 |
+|   speech   |                      应用于屏幕阅读器等发声设备                       |
+
+### 13.4 多个条件联合
+
+```css
+/* ----------- Non-Retina Screens ----------- */
+@media screen
+ and (min-width: 1200px)
+ and (max-width: 1600px)
+ and (-webkit-min-device-pixel-ratio: 1) {
+}
+/* ----------- Retina Screens ----------- */
+@media screen
+ and (min-width: 1200px)
+ and (max-width: 1600px)
+ and (-webkit-min-device-pixel-ratio: 2)
+ and (min-resolution: 192dpi) {
+}
+```
+显示屏中有两种像素。 一个是逻辑像素，另一个是物理像素。 通常，物理像素始终保持不变，因为所有显示设备的物理像素都相同。 逻辑像素根据设备的分辨率而变化，以显示更高质量的像素。 器件像素比率是物理像素和逻辑像素之间的比率。
+
+### 宽度和视口
+
+当我们在媒体查询中使用“宽度”时，正确设置meta标签非常重要。 基本的元标记看起来像这个，它需要放在<head>标记内。
+`<meta name="viewport" content="width=device-width,initial-scale=1">`
+
+### 13.6 使用媒体查询适应不同的屏幕大小
+
+```css
+@media only screen and (min-width: 300px) and (max-width: 767px) {
+  .site-title {
+    font-size: 80%;
+  }
+ /* screen 300px < width < 767px */
+}
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .site-title {
+    font-size: 90%;
+  }
+ /* screen 768px < width < 1023px */
+}
+@media only screen and (min-width: 1024px) {
+  .site-title {
+    font-size: 120%;
+  }
+/* screen 1024px < width */
+}
+```
+
+### 在 link 标签上使用
+
+`<link rel="stylesheet" media="min-width: 600px" href="example.css" />` 这个样式表仍然会下载，但只应用大于600px的屏幕上
+
+### IE 中的应用
+
+媒体查询不支持 IE 8 及之前的浏览器。但可以增加js来支持
+
+```html
+<!--[if lt IE 9]>
+<script
+  src="respond.min.js">
+</script>
+<![endif]-->
+<!-- 或者 -->
+<!--[if lt IE 9]>
+<script
+  src="css3-mediaqueries.js">
+</script>
+<![endif]-->
+<!-- 对 IE9 以下的应用新的样式 -->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" media="all" href="style-ielt9.css"/>
+<![endif]-->
+```
+
+[http://browserhacks.com/](http://browserhacks.com/)
+
+## 第 14 章 Floats
+
+### 14.1 文字环绕图片
+
+```html
+![float-01](C:/Users/zongjiang.ge/Desktop/float-01.png)<style>
+  img {
+    float:left;
+    margin-right:1rem;
+    width: 100px;
+  }
+</style>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed
+cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis
+ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia
+arcu eget nulla. </p>
+<img src="./cat.jpg" />
+<p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque
+nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin
+ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non,
+massa. Fusce ac turpis quis ligula lacinia aliquet. </p>
+```
+
+![float-01](img/CSS 笔记/float-01.png)
+
+### 14.2 clear
+
+clear 属性与 float 属性相关，主要用来清除浮动带来的影响。
+
+| 值      | 描述                                  |
+| :------ | :------------------------------------ |
+| left    | 在左侧不允许浮动元素。                |
+| right   | 在右侧不允许浮动元素。                |
+| both    | 在左右两侧均不允许浮动元素。          |
+| none    | 默认值。允许浮动元素出现在两侧。      |
+| inherit | 规定应该从父元素继承 clear 属性的值。 |
+
+图片浮动在左侧，并且清除左侧浮动的话，元素会在浮动元素下边开始展示。
+
+### 14.3 Clearfix
+
+clearfix 是一种清除浮动带来影响的方式，还可以清除上下外边距的折叠。
+
+```css
+/* 内容的空格是为了兼容 Opera 的bug。table 是为了阻止父子外边距的折叠 */
+.cf:before,
+.cf:after {
+  content: " ";
+  display: table;
+}
+.cf:after {
+  clear: both;
+}
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+  *zoom: 1;
+}
+
+```
+
+### 14.4 In-line div 
+
+块级元素浮动后会像行内块一样排列，不糊再独占一行。
+
+```html
+<style>
+  .inner-div1 {
+    width: 50%;
+    margin-right: 0px;
+    float: left;
+    background: #337ab7;
+    padding: 50px 0px;
+  }
+
+  .inner-div2 {
+    width: 50%;
+    margin-right: 0px;
+    float: left;
+    background: #dd2c00;
+    padding: 50px 0px;
+  }
+
+  p {
+    text-align: center;
+  }
+</style>
+
+<div class="outer-div">
+  <div class="inner-div1">
+    <p>This is DIV 1</p>
+  </div>
+  <div class="inner-div2">
+    <p>This is DIV 2</p>
+  </div>
+</div>
+
+```
+
+### 14.5 使用 overflow 属性去清除浮动
+
+将 overflow 设置为 hidden,auto,scroll 之一会清除浮动。设置为scroll 会显示滚动条。
+
+### 14.6 简单的两个固定宽度的列布局
+
+一个简单的两列布局由两个固定宽度的浮动元素组成。 请注意，侧边栏和内容区域在此示例中高度不相同。 这是使用浮动的多列布局的棘手部分之一，并且需要变通办法以使多个列看起来是相同的高度。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单的两列固定布局</title>
+    <style>
+      .wrapper {
+        width: 600px;
+        padding: 20px;
+        background-color: pink;
+        /* Floated elements don't use any height. Adding 
+        "overflow:hidden;" forces theparent element to expand
+         to contain its floated children. */
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 150px;
+        height:100%;
+        float: left;
+        background-color: blue;
+      }
+
+      .content {
+        width: 450px;
+        float: right;
+        background-color: yellow;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <h2>Sidebar</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.</p>
+      </div>
+      <div class="content">
+        <h1>Content</h1>
+        <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque
+          nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin
+          ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non,
+          massa. Fusce ac turpis quis ligula lacinia aliquet. </p>
+      </div>
+    </div>
+  </body>
+
+</html>
+```
+
+### 14.7 简单的三栏固定宽度布局
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简答的固定布局</title>
+    <style>
+      .wrapper {
+        width: 600px;
+        background-color: pink;
+        padding: 20px;
+        overflow: hidden;
+      }
+
+      .left-sidebar {
+        width: 150px;
+        background-color: blue;
+        float: left;
+      }
+
+      .content {
+        width: 300px;
+        background-color: yellow;
+        float: left;
+      }
+
+      .right-sidebar {
+        width: 150px;
+        background-color: green;
+        float: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="left-sidebar">
+        <h1>Left Sidebar</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+      </div>
+      <div class="content">
+        <h1>Content</h1>
+        <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque
+          nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin
+          ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non,
+          massa. </p>
+      </div>
+      <div class="right-sidebar">
+        <h1>Right Sidebar</h1>
+        <p>Fusce ac turpis quis ligula lacinia aliquet.</p>
+      </div>
+    </div>
+
+  </body>
+
+</html>
+```
+
+### 14.8 两列懒/贪心布局
+
+此布局使用一个浮动列创建没有定义宽度的两列布局。 在这个例子中，左边边栏是“懒惰的”，因为它只占用所需的空间。 另一种说法是，左侧边栏是“shrink-wrapped.” 右侧的内容列为“贪婪”，因为它占据了所有剩余空间。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+      .sidebar {
+        /* `display:table;` shrink-wraps the column */
+        display: table;
+        float: left;
+        background-color: blue;
+      }
+
+      .content {
+        /* `overflow:hidden;` prevents `.content` from flowing under `.sidebar` */
+        overflow: hidden;
+        background-color: yellow;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <h1>Sidebar</h1>
+      <img src="./cat.jpg" />
+    </div>
+    <div class="content">
+      <h1>Content</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed
+        cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis
+        ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia
+        arcu eget nulla. </p>
+      <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+        Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque
+        nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin
+        ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non,
+        massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper
+        vel, tincidunt sed, euismod in, nibh. </p>
+    </div>
+
+  </body>
+
+</html>
+```
+
+## 文本排版
+
+|    Parameter    |                          Details                          |
+| :-------------: | :-------------------------------------------------------: |
+|   font-style    |              斜体或者倾斜，italics、oblique               |
+|  font-variant   |         小型大写字母         normal or small-caps         |
+|   font-weight   |     字体粗细 normal, bold or numeric from 100 to 900.     |
+|    font-size    |     字体大小可以使用 %, px, em, 或者其他css允许的单位     |
+|   line-height   |     行高单位可以使用 %, px, em, 或者其他css允许的单位     |
+|   font-family   |                     使用定义好的字体                      |
+|      color      |  字体颜色，例如： red, #00FF00, hsl(240, 100%, 50%) etc.  |
+|   text-align    |  start, end, left, right, center, justify, match-parent   |
+| text-decoration | none, underline, overline, line-through, initial, inherit |
+|  font-stretch   |    font-Stretch属性允许你使文字变宽或变窄,具体查看mdn     |
+
+### 15.1 font 简写属性
+
+```txt
+selector{
+  font:[font-style] [font-variant] [font-weight] [font-size/line-height] [font-family];
+}
+```
+**例子：**
+```css
+p{
+  font-weigth:bold;
+  font-size:20px;
+  font-familu: Arial,sans-serif;
+}
+/* 等价于 */
+p{
+  font: bold 20px Arial,sans-serif;
+}
+/* 简写属性必须包含 font-size 和 font-family 不然会被忽略，
+可以省略 font-style, font-variant, font-weight 默认值都是 normal*/
+```
+
+### 15.2 quotes 属性
+
+quotes 属性用于自定义 <q> 标签的开始和结束引号。`q{quotes:"<<" ">>";}`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style type="text/css">
+q:lang(en)
+{
+quotes: "~" "~" "'" "'";
+}
+</style>
+</head>
+<body>
+<!-- ~This is a 'big' quote.~ -->
+<p><q>This is a <q>big</q> quote.</q></p>
+<p><b>注意:</b>当声明了!DOCTYPE 时， IE8 才支持这些属性。</p>
+</body>
+</html>
+```
+
+### font-size 
+
+设置字体大小
+
+```html
+<style>
+#element-one {
+  font-size: 30px;
+}
+#element-two {
+  font-size: 10px;
+}
+</style>
+<div id="element-one">Hello I am some text.</div>
+<div id="element-two">Hello I am some smaller text.</div>
+```
+
+### 文本方向
+
+书写模式属性会更改文本的对齐方式，以便可以从上到下或从左到右读取文本，取决于语言。
+
+- `direction: ltr;` 默认值，从左到右
+- `direction: rtl;` 从右到左
+- `writing-mode: horizontal-tb` 从右到左
+- `writing-mode: vertical-lr` 从左到右从上到下
+- `writing-mode: vertical-rl` 从右到左从上到下
+
+### font-family
+
+```css
+/* 浏览器从左到右尝试，如果不能应用则使用下一个，并在必要是使用用户计算机上的任何等宽字体 */
+font-family: 'Segoe UI', Tahoma, sans-serif;
+/* 多个单词，即有空格的字体名都需要引号 */
+font-family: Consolas, 'Courier New', monospace;
+```
+
+### text-overflow
+
+溢出内容的裁剪方式
+
+```css
+text {
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+/* 多行 */
+.giveMeEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: N; /* number of lines to show */
+  line-height: X; /* fallback */
+  max-height: X*N; /* fallback */
+}
+
+```
+
+### 15.7 text-shadow
+
+```css
+/* 蓝色阴影向下2px 向右1px 相对于字体现在位置 */
+h1 {
+  text-shadow: 1px 2px blue;
+}
+/* 增加模糊半径 10px 越大越淡*/
+h1 {
+  text-shadow: 2px 2px 10px #0000FF;
+}
+/* 多个阴影，颜色会有一点叠加，下边叠加后呈现洋红色 */
+h1 {
+  text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+}
+```
+
+### 15.8 text-transform
+
+文本的大小写和驼峰等的转换
+
+```css
+/* all letters 转换为 */
+.example1 {
+  text-transform: uppercase; /* ALL LETTERS */
+}
+.example2 {
+  text-transform: capitalize;/* All Letters */
+}
+.example3 {
+  text-transform: lowercase;/* all letters */
+}
+
+```
+
+### 15.9 letter-spacing
+
+```css
+h1{
+  /* 在每个字符之间增加1px的间距 */
+  letter-spacing: 1px;
+}
+/* 支持负值,更紧凑 */
+h1 {
+  letter-spacing: -1px;
+}
+
+```
+
+### text-indent
+
+text-indent 属性指定在元素的文本内容的第一行的开头之前应移动多少水平空间文本。
+
+```css
+/* 支持负值，负值一般用在搜索引擎优化上 */
+p {
+  text-indent: 50px;
+}
+```
+
+### 15.11 text-decoration
+
+text-decoration属性用于设置文本装饰
+
+```css
+/* 默认 黑色 solid */
+h1 { text-decoration: none; }/* 无 */
+h2 { text-decoration: overline; }/* 上划线 */
+h3 { text-decoration: line-through; }/* 中划线 */
+h4 { text-decoration: underline; } /* 下划线 */
+
+.title{
+  text-decoration:undeline solid red;/* 红色的下划线 */
+}
+```
+
+### 15.12 单词间隔
+
+- normal 默认值，正常间隔。
+- px、em、vh、cm、% 等css单位
+- inherit 继承父标签
+
+```html
+<style>
+.normal { word-spacing: normal; }
+.narrow { word-spacing: -3px; }
+.extensive { word-spacing: 10px; }
+</style>
+
+<p>
+ <span class="normal">This is an example, showing the effect of "word-spacing".</span><br>
+ <span class="narrow">This is an example, showing the effect of "word-spacing".</span><br>
+ <span class="extensive">This is an example, showing the effect of "word-spacing".</span><br>
+</p>
+```
+
+### font-variant
+
+```css
+/* 将小写字母转换为大写字母，并缩小字号。其他值 normal inherit */
+h1{
+  font-variant: small-caps; 
+}
+```
+
+## 第 16 章 弹性盒子布局（Flexbox）
+
+flex 布局支持 ie10+ 。弹性盒模型，简称‘Flexbox’，是一种为用户界面设计的盒模型。它允许用户在容器中的不同项目之间对齐和分配空间，以便于当页面布局必须适应不同的屏幕尺寸时，元素的行为是可预测的。Flex容器可扩展项目填充可用空间，或者缩小项目与防止溢出。容器是指应用 display:flex; 的元素，项目指它的子元素。
+
+### 16.1 动态垂直和水平居中(align-items, justify-content)
+
+```html
+  <style>
+    html,body{
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+    .aligner{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #eee;
+      height: 100%;
+    }
+    .aligner-item{
+      max-width: 50%;
+      width: 100px;
+      height: 100px;
+      background-color: aqua;
+    }
+  </style>
+  <div class="aligner">
+    <div class="aligner-item"></div>
+  </div>
+
+```
+
+![](./img/CSS 笔记/flex.png)
+
+容器默认存在两根轴：水平的主轴（main axis）和垂直的交叉轴（cross axis）。主轴的开始位置（与边框的交叉点）叫做main start，结束位置叫做main end；交叉轴的开始位置叫做cross start，结束位置叫做cross end。
+
+项目默认沿主轴排列。单个项目占据的主轴空间叫做main size，占据的交叉轴空间叫做cross size。
+
+**容器上的属性**
+
+|      属性       |                           说明                           |
+| :-------------: | :------------------------------------------------------: |
+| flex-direction  |                         主轴方向                         |
+|    flex-wrap    |                         如何换行                         |
+|    flex-flow    |             flex-direction和flex-wrap的简写              |
+| justify-content |                  项目在主轴上的对齐方式                  |
+|   align-items   |                 项目在交叉轴上的对齐方式                 |
+|  align-content  | 多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 |
+
+**flex-direction**
+
+- row（默认值）：主轴为水平方向，起点在左端。
+- row-reverse：主轴为水平方向，起点在右端。
+- column：主轴为垂直方向，起点在上沿。
+- column-reverse：主轴为垂直方向，起点在下沿。
+
+**flex-wrap**
+
+- nowrap（默认值）：不换行
+- wrap：换行，第一行在上方
+- wrap-reverse：换行，第一行在下方
+
+**flex-flow**
+
+`flex-flow:<flex-direction> <flex-wrap>`，默认值 row nowrap
+
+**justify-content**
+
+和主轴的方向相关，假设主轴默认从左到右的话。
+
+- flex-start：对齐
+- flex-end：右对齐
+- center：水平居中
+- space-between：两端对齐，项目之间间隔相等
+- space-around：每个项目两侧的间隔相等，项目之间间隔比项目与容器之间的间隔大一倍
+
+**align-items**
+
+和交叉轴的方向有关，假设交叉轴从上到下
+
+- flex-start：顶部对齐
+- flex-end：底部对齐
+- center：垂直居中
+- baseline：项目的第一行文字的基线对齐
+- strech（默认值）：如果项目未设置高度或者为auto，将占满整个容器的高度
+
+**align-content**
+
+- flex-start：与交叉轴的起点对齐。
+- flex-end：与交叉轴的终点对齐。
+- center：与交叉轴的中点对齐。
+
+- space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。
+- space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。
+- strech（默认值）：轴线占满整个交叉轴。
+
+**项目的属性**
+
+|    属性     |                                                                       说明                                                                        |
+| :---------: | :-----------------------------------------------------------------------------------------------------------------------------------------------: |
+|    order    |                                                  项目的排列顺序。数值越小，排列越靠前，默认为0。                                                  |
+|  flex-grow  |                                              项目的放大比例，默认为0，即如果存在剩余空间，也不放大。                                              |
+| flex-shrink |                                              项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。                                              |
+| flex-basis  |       在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。       |
+|    flex     |                                  flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。                                   |
+| align-self  | 允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。 |
+
+ align-self: auto | flex-start | flex-end | center | baseline | stretch; 除auto继承外其他的属性和align-items 相同，如果没有高度，则填充父元素高度。
+
+<div style="width:100%;height:100px;background:#eee;display:flex;flex-direction:row; justify-content:center;">
+      <div style="width:100px;height:100px;background:green;"></div>
+      <div style="width:100px;height:100px;margin-left:20px;background:green;"></div>
+      <div style="width:100px;height:100px;margin-left:20px;background:green;"></div>
+</div>
+
+<div style="width:100%;height:340px;background:#eee;display:flex;flex-direction:column; justify-content:center;">
+      <div style="width:100px;height:100px;background:green;"></div>
+      <div style="width:100px;height:100px;margin-top:20px;background:green;"></div>
+      <div style="width:100px;height:100px;margin-top:20px;background:green;"></div>
+</div>
+
+<div style="width:100%;height:300px;background:#eee;display:flex;flex-direction:row; justify-content:center;align-items:center">
+      <div style="width:100px;height:100px;background:green;"></div>
+      <div style="width:100px;height:100px;margin-left:20px;background:green;"></div>
+      <div style="width:100px;height:100px;margin-left:20px;background:green;"></div>
+</div>
+
+### 16.2 粘性可变高度页脚
+
+content 的高度随body的高度变动。
+
+```html
+<style>
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content {
+    /* Include `0 auto` for best browser compatibility. */
+    flex: 1 0 auto;
+  }
+
+  .header,
+  .footer {
+    background-color: grey;
+    color: white;
+    flex: none;
+  }
+</style>
+
+<header class="header">
+  <h2>Header</h2>
+</header>
+<div class="content">
+  <h1>Content</h1>
+</div>
+<footer class="footer">
+  <h4>Footer</h4>
+</footer>
+```
+
+### 16.3 根据容器宽度自适应
+
+```html
+<style>
+  .flex-container {
+    background-color: #000;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: stretch;
+  }
+  .flex-item {
+    background-color: #ccf;
+    margin: 0.1em;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 150px;
+    /* or % could be used to ensure a specific layout ％ 可用于确保特定的布局 */
+  }
+</style>
+    
+<p>Resize preview window to see what this is doing.</p>
+<div class="flex-container">
+  <div class="flex-item">1</div>
+  <div class="flex-item">2</div>
+  <div class="flex-item">3</div>
+  <div class="flex-item">4</div>
+  <div class="flex-item">5</div>
+</div>
+```
+
+### 16.4  Holy Grail Layout (圣杯布局) 使用 flex
+
+Holy Grail布局是具有固定高度的页眉和页脚以及中心带有3列的布局。 这3列包括一个固定宽度的侧边导航栏，一个动态的中间内容区和一个用于其他内容（例如广告）的列（动态的中间内容区在html中首先出现）
+
+```html
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .header {
+    flex: 0 0 50px;
+    background-color: bisque;
+  }
+
+  .content-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    background-color: #eee;
+  }
+
+  .content-body .content {
+    flex: 1 1 auto;
+    overflow: auto;
+    background-color: aquamarine;
+  }
+
+  .content-body .sidenav {
+    order: -1;
+    flex: 0 0 100px;
+    overflow: auto;
+    background-color: beige;
+  }
+
+  .content-body .ads {
+    flex: 0 0 100px;
+    overflow: auto;
+    background-color: #bfa;
+  }
+
+  .footer {
+    flex: 0 0 50px;
+    background-color: bisque;
+  }
+</style>
+
+<div class="container">
+  <header class="header">Header</header>
+  <div class="content-body">
+    <main class="content">Content</main>
+    <nav class="sidenav">Nav</nav>
+    <aside class="ads">Ads</aside>
+  </div>
+  <footer class="footer">Footer</footer>
+</div>
+```
+
+### 16.5  使卡片的的 button 对齐在底部
+
+```html
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .header {
+    flex: 0 0 50px;
+  }
+
+  .content-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .content-body .content {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+
+  .content-body .sidenav {
+    order: -1;
+    flex: 0 0 100px;
+    overflow: auto;
+  }
+
+  .content-body .ads {
+    flex: 0 0 100px;
+    overflow: auto;
+  }
+
+  .footer {
+    flex: 0 0 50px;
+  }
+
+  .cards {
+    display: flex;
+  }
+
+  .card {
+    border: 1px solid #ccc;
+    margin: 10px 10px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  button {
+    height: 40px;
+    background: #fff;
+    padding: 0 40px;
+    border: 1px solid #000;
+  }
+
+  p:last-child {
+    text-align: center;
+    margin-top: auto;
+  }
+</style>
+
+<div class="cards">
+  <div class="card">
+    <p>Lorem ipsum Magna proident ex anim dolor ullamco pariatur reprehenderit culpa esse enim
+      mollit labore dolore voluptate ullamco et ut sed qui minim.</p>
+    <p><button>Action</button></p>
+  </div>
+  <div class="card">
+    <p>Lorem ipsum Magna proident ex anim dolor ullamco pariatur reprehenderit culpa esse enim
+      mollit labore dolore voluptate ullamco et ut sed qui minim.</p>
+    <p>Lorem ipsum Magna proident ex anim dolor ullamco pariatur reprehenderit culpa esse enim
+      mollit labore dolore voluptate ullamco et ut sed qui minim.</p>
+    <p>Lorem ipsum Magna proident ex anim dolor ullamco pariatur reprehenderit culpa esse enim
+      mollit labore dolore voluptate ullamco et ut sed qui minim.</p>
+    <p>Lorem ipsum Magna proident ex anim dolor ullamco pariatur reprehenderit culpa esse enim
+      mollit labore dolore voluptate ullamco et ut sed qui minim.</p>
+    <p><button>Action</button></p>
+  </div>
+</div>
+```
+
+### 16.6 容器内两列高度相同
+
+```html
+<style>
+  .container {
+    display: flex;
+    align-items: stretch;
+  }
+</style>
+
+<div class="container">
+  <div style="background-color: red">
+    Some <br />
+    data <br />
+    to make<br />
+    GoalKicker.com – CSS Notes for Professionals 108
+    a height <br />
+  </div>
+  <div style="background-color: blue">
+    Fewer <br />
+    lines <br />
+  </div>
+</div>
+```
+
+## 第 17 章 选择器的优先级（权重）
+
+*、>、~ 没有权重。在样式表中的权重分三个等级，id为最高级，class为第二级，标签选择器为最后一级。最大的优先级是 !important,其次是内联样式，最后是样式表中的权重。当优先级一样时后声明的权重大。
+
+```css
+#foo #baz {}   /* a=2, b=0, c=0 */
+#foo.bar {}    /* a=1, b=1, c=0 */
+#foo {}        /* a=1, b=0, c=0 */
+.bar:hover {}  /* a=0, b=2, c=0 */
+div.bar {}     /* a=0, b=1, c=1 */
+:hover {}      /* a=0, b=1, c=0 */
+[title] {}     /* a=0, b=1, c=0 */
+.bar {}        /* a=0, b=1, c=0 */
+div ul + li {} /* a=0, b=0, c=3 */
+p::after {}    /* a=0, b=0, c=2 */
+*::before {}   /* a=0, b=0, c=1 */
+::before {}    /* a=0, b=0, c=1 */
+div {}         /* a=0, b=0, c=1 */
+* {}           /* a=0, b=0, c=0 */
+```
+
+**1000、100、10、1 这种并不严谨，需要具体测浏览器去测试。标准并没有说怎么实现各个级别的进制关系**
+
+## 第 18 章 颜色
+
+###  18.1 currentColor
+
+```css
+div{
+    color: red;
+    border: 5px solid currentColor;
+    box-shadow: 0 0 5px currentColor;
+}
+/* currentColor 是 red*/
+div{
+    color: red;
+    border: 5px solid currentColor;
+    color: green;
+}
+/* currentColor 是 green*/
+/* currentColor 是一个动态计算的值，因此当color被覆盖后边框的颜色就是绿色了*/
+.parent-class {
+ 	color: blue;
+}
+.parent-class .child-class {
+ 	background-color: currentColor;
+}
+/* 子元素背景色是蓝色，color默认是继承的*/
+```
+
+### 18.2 颜色的关键字
+
+transparent,rgba(0,0,0,0) 代表完全透明。其他：https://developer.mozilla.org/zh-CN/docs/Web/CSS/color_value
+
+### 18.3 十六进制值 （Hexadecimal Value）
+
+```css
+.red{
+    color: #ff0000; /*相当于 #f00 */
+}
+/* 不能表示透明 */
+```
+
+### 18.4 rgb
+
+```css
+.red{
+    color: rgb(255,0,0);/*相当于 rgb(100%, 0%, 0%) */
+}
+/* 取值范围 0-255 或者 0 -100% */
+```
+
+### 18.5 rgba
+
+```css
+.red{
+    color: rgba(255,0,0,1);
+}
+.red-50p{
+    color: rgba(255,0,0,.5);
+}
+/* 透明度取值范围 0 - 1 的浮点数*/
+```
+
+### 18.6 hsl
+
+```css
+.blue{
+    color: hsl(240,100%,50%);
+}
+/* 取值范围： 0-360， 0-100%，0-100%*/
+```
+
+### 18.7 hsla
+
+```css
+.blue-50p{
+    color: hsla(240,100%,50%,.5);
+}
+```
+
+## 第 19 章 Opacity
+
+取值范围 0-1，0：完全透明，1：完全不透明。支持ie9+
+
+```css
+/* 表示元素整体的透明度 */
+div{
+    opacity: 0.8;
+}
+/* IE 兼容*/
+.p60{
+    /* for IE 8 & 9 */
+ 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; // IE8
+ 	/* works in IE 8 & 9 too, but also 5, 6, 7 */
+ 	filter: alpha(opacity=60); // IE 5-7
+ 	/* Modern Browsers */
+ 	opacity: 0.6;
+}
+```
+
+## 第 20 章 长度单位
+
+具体请看https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Building_blocks/Values_and_units

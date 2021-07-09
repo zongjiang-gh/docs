@@ -147,6 +147,25 @@ git commit --amend
 git reset
 # 撤销操作，谨慎使用,会造成工作丢失
 git checkout -- xxxx
+# 本地存储修改,本地存储当前修改以进行新问题的修改
+# https://www.cnblogs.com/tocy/p/git-stash-reference.html
+git stash
+git stash save "xxxxxxxxx"
+# 本地储藏的列表
+git stash list
+# 重新应用最新缓存的工作目录，并删除
+git stash pop
+# 只应用对应的 stash
+git stash apply
+# 删除存储
+git stash drop stash@{0}# 这里是存储的名字，可以用list查看
+git stash clear # 删除所有
+# 查看diff -p 可以查看所有的diff
+git stash show
+# 从stash 创建分支
+git stash branch testchanges
+# 不会缓存新创建的文件，使用 -u 或者 -a 来缓存为跟踪的，或者所有文件
+# 不缓存 untracked files、ignored files
 ```
 
 ## 忽略文件
